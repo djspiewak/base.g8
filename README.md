@@ -1,5 +1,9 @@
 A [Giter8][g8] template for base projects.  Useful mostly to me.  Published on the off-chance that it is useful to someone else.
 
+```bash
+$ sbt new djspiewak/base.g8
+```
+
 ## License
 
 Written in 2016 by Daniel Spiewak <djspiewak@gmail.com>
