@@ -50,13 +50,19 @@ crossScalaVersions := {
 
   val yaml = new Yaml
 
-  val list = Option(yaml.load(new FIS(baseDirectory.value / ".travis.yml"))) collect {
-    case map: ju.Map[_, _] => Option(map.get("scala"))
-  } flatten
+  val fis = new FIS(baseDirectory.value / ".travis.yml")
 
-  list collect {
-    case versions: ju.List[_] => versions.asScala.toList map { _.toString }
-  } getOrElse List("$scala_version$")
+  try {
+    val list = Option(yaml.load(fis)) collect {
+      case map: ju.Map[_, _] => Option(map.get("scala"))
+    } flatten
+
+    list collect {
+      case versions: ju.List[_] => versions.asScala.toList map { _.toString }
+    } getOrElse List("$scala_version$")
+  } finally {
+    fis.close()
+  }
 }
 
 scalaVersion := crossScalaVersions.value.last
