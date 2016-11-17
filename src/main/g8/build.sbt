@@ -33,16 +33,33 @@ name := "$name$"
  */
 val BaseVersion = "0.0"
 
-/***********************************************************************/
-
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/"))
 
-crossScalaVersions := List("$scala_version$")
+/***********************************************************************\
+                      Boilerplate below these lines
+\***********************************************************************/
+
+// parses Scala versions out of .travis.yml (doesn't support build matrices)
+crossScalaVersions := {
+  import org.yaml.snakeyaml.Yaml
+
+  import scala.collection.JavaConverters._
+
+  import java.io.{FileInputStream => FIS}
+  import java.{util => ju}
+
+  val yaml = new Yaml
+
+  val list = Option(yaml.load(new FIS(baseDirectory.value / ".travis.yml"))) collect {
+    case map: ju.Map[_, _] => Option(map.get("scala"))
+  } flatten
+
+  list collect {
+    case versions: ju.List[_] => versions.asScala.toList map { _.toString }
+  } getOrElse List("$scala_version$")
+}
+
 scalaVersion := crossScalaVersions.value.last
-
-/***********************************************************************/
-
-// boilerplate to follow
 
 coursierUseSbtCredentials := true
 coursierChecksums := Nil      // workaround for nexus sync bugs
