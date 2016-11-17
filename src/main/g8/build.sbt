@@ -14,7 +14,28 @@ coursierChecksums := Nil      // workaround for nexus sync bugs
 
 addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.3" cross CrossVersion.binary)
 
-scalacOptions ++= Seq("-language:_")
+// Adapted from Rob Norris' post at https://tpolecat.github.io/2014/04/11/scalac-flags.html
+scalacOptions ++= Seq(
+  "-language:_",
+  "-deprecation",
+  "-encoding", "UTF-8", // yes, this is 2 args
+  "-feature",
+  "-unchecked",
+  "-Xfatal-warnings",
+  "-Xlint",
+  "-Yno-adapted-args",
+  "-Ywarn-dead-code"
+)
+
+scalacOptions ++= {
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq(
+      "-Ywarn-unused-import", // Not available in 2.10
+      "-Ywarn-numeric-widen" // In 2.10 this produces a some strange spurious error
+    )
+    case _ => Seq.empty
+  }
+}
 
 scalacOptions ++= {
   scalaVersion.value match {
@@ -24,6 +45,12 @@ scalacOptions ++= {
   }
 }
 
+scalacOptions in Test += "-Yrangepos"
+
+scalacOptions in (Compile, console) ~= (_ filterNot (Set("-Xfatal-warnings", "-Ywarn-unused-import").contains))
+
+scalacOptions in (Test, console) := (scalacOptions in (Compile, console)).value
+
 libraryDependencies ++= {
   scalaVersion.value match {
     case "2.11.8" => Seq(compilerPlugin("com.milessabin" % "si2712fix-plugin" % "1.2.0" cross CrossVersion.full))
@@ -31,8 +58,6 @@ libraryDependencies ++= {
     case _ => Seq.empty
   }
 }
-
-scalacOptions in Test += "-Yrangepos"
 
 enablePlugins(GitVersioning)
 
