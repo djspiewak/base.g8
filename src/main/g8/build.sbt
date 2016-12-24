@@ -13,59 +13,33 @@ name := "$name$"
  * As an example, the builds of a project might go something like
  * this:
  *
- * - 0.0-hash1
- * - 0.0-hash2
- * - 0.0-hash3
- * - 0.1
  * - 0.1-hash1
  * - 0.1-hash2
+ * - 0.1-hash3
+ * - 0.1
+ * - 0.1-hash1
+ * - 0.2-hash2
  * - 0.2
  * - 0.2-hash1
  * - 0.2-hash2
- * - 0.2-hash3
- * - 0.2-hash4
+ * - 1.0-hash3
+ * - 1.0-hash4
  * - 1.0
  *
- * The value of BaseVersion starts at 0.0, then increments to 0.1
- * when that release is tagged, and so on.  Again, this is all to
- * avoid pre-committing to a major/minor bump before the work is
- * done (see: Scala 2.8).
+ * The value of BaseVersion starts at 0.1 and remains there until
+ * compatibility with the 0.1 line is lost, which happens just
+ * prior to the release of 0.2.  Then the base version again remains
+ * 0.2-compatible until that compatibility is broken, with the major
+ * version bump of 1.0.  Again, this is all to avoid pre-committing
+ * to a major/minor bump before the work is done (see: Scala 2.8).
  */
-val BaseVersion = "0.0"
+val BaseVersion = "0.1"
 
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/"))
 
 /***********************************************************************\
                       Boilerplate below these lines
 \***********************************************************************/
-
-// parses Scala versions out of .travis.yml (doesn't support build matrices)
-crossScalaVersions := {
-  import org.yaml.snakeyaml.Yaml
-
-  import scala.collection.JavaConverters._
-
-  import java.io.{FileInputStream => FIS}
-  import java.{util => ju}
-
-  val yaml = new Yaml
-
-  val fis = new FIS(baseDirectory.value / ".travis.yml")
-
-  try {
-    val list = Option(yaml.load(fis)) collect {
-      case map: ju.Map[_, _] => Option(map.get("scala"))
-    } flatten
-
-    list collect {
-      case versions: ju.List[_] => versions.asScala.toList map { _.toString }
-    } getOrElse List("$scala_version$")
-  } finally {
-    fis.close()
-  }
-}
-
-scalaVersion := crossScalaVersions.value.last
 
 coursierUseSbtCredentials := true
 coursierChecksums := Nil      // workaround for nexus sync bugs
@@ -87,7 +61,7 @@ scalacOptions ++= Seq(
 
 scalacOptions ++= {
   CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, scalaMajor)) if scalaMajor >= 11 => Seq(
+    case Some((2, major)) if major >= 11 => Seq(
       "-Ywarn-unused-import", // Not available in 2.10
       "-Ywarn-numeric-widen" // In 2.10 this produces a some strange spurious error
     )
@@ -96,9 +70,10 @@ scalacOptions ++= {
 }
 
 scalacOptions ++= {
-  scalaVersion.value match {
-    case "2.11.9" => Seq("-Ypartial-unification")
-    case v if v startsWith "2.12" => Seq("-Ypartial-unification")
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, major)) if major >= 12 || scalaVersion.value == "2.11.9" =>
+      Seq("-Ypartial-unification")
+
     case _ => Seq.empty
   }
 }
