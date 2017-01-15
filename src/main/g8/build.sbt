@@ -37,12 +37,21 @@ val BaseVersion = "0.1"
 
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/"))
 
+// bintrayVcsUrl := Some("...")
+
 /***********************************************************************\
                       Boilerplate below these lines
 \***********************************************************************/
 
 coursierUseSbtCredentials := true
 coursierChecksums := Nil      // workaround for nexus sync bugs
+
+credentials in bintray := {
+  if (isTravisBuild.value)
+    Nil
+  else
+    (credentials in bintray).value
+}
 
 addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.3" cross CrossVersion.binary)
 
