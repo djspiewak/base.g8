@@ -1,3 +1,5 @@
+import de.heikoseeberger.sbtheader.license.Apache2_0
+
 organization := "$organization$"
 
 name := "$name$"
@@ -36,6 +38,10 @@ name := "$name$"
 val BaseVersion = "0.1"
 
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/"))
+
+headers := Map(
+  "scala" -> Apache2_0("2017", "$copyright_owner$"),
+  "java" -> Apache2_0("2017", "$copyright_owner$"))
 
 // bintrayVcsUrl := Some("...")
 
