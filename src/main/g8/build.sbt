@@ -125,6 +125,8 @@ libraryDependencies ++= {
   }
 }
 
+useGpg := true
+
 enablePlugins(GitVersioning)
 
 val ReleaseTag = """^v([\\d\\.]+)\$""".r
