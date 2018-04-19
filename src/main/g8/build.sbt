@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+addCommandAlias("release", "; reload; +publishSigned")
+addCommandAlias("ci", "; clean; +test")
+
 organization := "$organization$"
 
 name := "$name$"
