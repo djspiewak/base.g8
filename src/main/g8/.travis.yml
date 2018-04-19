@@ -8,6 +8,10 @@ before_cache:
   - find \$HOME/.sbt -name "*.lock" -type f -delete
   - find \$HOME/.ivy2/cache -name "ivydata-*.properties" -type f -delete
 
+env:
+  global:
+    - COURSIER_PROGRESS=0
+
 cache:
   directories:
     - \$HOME/.ivy2/cache

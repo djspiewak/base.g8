@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import de.heikoseeberger.sbtheader.license.Apache2_0
-
 organization := "$organization$"
 
 name := "$name$"
@@ -53,17 +51,15 @@ name := "$name$"
  */
 val BaseVersion = "0.1"
 
-licenses += ("Apache-2.0", url("http://www.apache.org/licenses/"))
-
-headers := Map(
-  "scala" -> Apache2_0("2017", "$copyright_owner$"),
-  "java" -> Apache2_0("2017", "$copyright_owner$"))
-
 // bintrayVcsUrl := Some("...")
 
 /***********************************************************************\
                       Boilerplate below these lines
 \***********************************************************************/
+
+organizationName := "$copyright_owner$"
+startYear := Some(2018)
+licenses += ("Apache-2.0", url("http://www.apache.org/licenses/"))
 
 enablePlugins(AutomateHeaderPlugin)
 
@@ -71,13 +67,12 @@ coursierUseSbtCredentials := true
 coursierChecksums := Nil      // workaround for nexus sync bugs
 
 credentials in bintray := {
-  if (isTravisBuild.value)
-    Nil
-  else
-    (credentials in bintray).value
+  val old = (credentials in bintray).value
+
+  if (isTravisBuild.value) Nil else old
 }
 
-addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.3" cross CrossVersion.binary)
+addCompilerPlugin("org.spire-math" % "kind-projector" % "0.9.6" cross CrossVersion.binary)
 
 // Adapted from Rob Norris' post at https://tpolecat.github.io/2014/04/11/scalac-flags.html
 scalacOptions ++= Seq(
@@ -104,7 +99,7 @@ scalacOptions ++= {
 
 scalacOptions ++= {
   CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, major)) if major >= 12 || scalaVersion.value == "2.11.9" =>
+    case Some((2, major)) if major >= 12 || scalaVersion.value == "2.11.11" =>
       Seq("-Ypartial-unification")
 
     case _ => Seq.empty
