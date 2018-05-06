@@ -14,4 +14,4 @@
  * limitations under the License.
 */
 
-package object $name$
+package object $package;format="camel"$
