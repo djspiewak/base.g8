@@ -1,11 +1,15 @@
 sudo: false
 language: scala
 
+branches:
+  except:
+    - /^v\\d+\\.\\d+\\.\\d+\$/      # don't redundantly build tags
+
 scala:
   - $scala_version$
 
 script:
-  sbt ++\$TRAVIS_SCALA_VERSION ci
+  - sbt ++\$TRAVIS_SCALA_VERSION ci
 
 before_cache:
   - find \$HOME/.sbt -name "*.lock" -type f -delete
