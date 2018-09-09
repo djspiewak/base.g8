@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 $copyright_owner$
+ * Copyright 2018 $full_name$
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,4 +19,5 @@ name := "$name$"
 baseVersion in ThisBuild := "0.1"
 
 organization in ThisBuild := "$organization$"
-organizationName in ThisBuild := "$copyright_owner$"
+publishGithubUser in ThisBuild := "$github_username$"
+publishFullName in ThisBuild := "$full_name$"
