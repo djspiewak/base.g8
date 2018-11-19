@@ -1,1 +1,1 @@
-addSbtPlugin("com.codecommit" % "sbt-spiewak-$publisher$" % "0.7.0")
+addSbtPlugin("com.codecommit" % "sbt-spiewak-$publisher$" % "0.8.0")
