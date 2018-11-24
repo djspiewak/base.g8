@@ -1,4 +1,4 @@
-A [Giter8][g8] template for base projects.  Useful mostly to me.  Published on the off-chance that it is useful to someone else.
+A [Giter8][g8] template for projects based on [sbt-spiewak](https://github.com/djspiewak/sbt-spiewak). This is quite a nice template for getting up and running with a reasonably configured Scala project (with support for Scala 2.10 through 2.13) which has proper versioning, binary compatibility checks, and support for publication to Sonatype or Bintray. See sbt-spiewak for more details.
 
 ```bash
 $ sbt new djspiewak/base.g8
