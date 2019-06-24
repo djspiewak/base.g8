@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 $full_name$
+ * Copyright 2019 $full_name$
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
