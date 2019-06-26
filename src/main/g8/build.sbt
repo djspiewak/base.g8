@@ -16,8 +16,8 @@
 
 name := "$name$"
 
-baseVersion in ThisBuild := "0.1"
+ThisBuild / baseVersion := "0.1"
 
-organization in ThisBuild := "$organization$"
-publishGithubUser in ThisBuild := "$github_username$"
-publishFullName in ThisBuild := "$full_name$"
+ThisBuild / organization := "$organization$"
+ThisBuild / publishGithubUser := "$github_username$"
+ThisBuild / publishFullName := "$full_name$"
