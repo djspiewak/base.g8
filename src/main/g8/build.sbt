@@ -22,5 +22,4 @@ ThisBuild / organization := "$organization$"
 ThisBuild / publishGithubUser := "$github_username$"
 ThisBuild / publishFullName := "$full_name$"
 
-ThisBuild / scalaVersion := crossScalaVersions.value.last
 ThisBuild / crossScalaVersions := Seq("$scala_version$")
