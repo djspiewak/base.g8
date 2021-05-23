@@ -5,9 +5,6 @@ TODO description
 ## Usage
 
 ```sbt
-// ...if using bintray
-// resolvers += Resolver.bintrayRepo("$github_username$", "maven")
-
 libraryDependencies += "$organization$" %% "$name$" % "<version>"
 ```
 
